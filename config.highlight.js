@@ -1,0 +1,18 @@
+module.exports = [
+  "firefox",
+  "harfbuzz",
+  "qt5-wayland",
+  "rust-analyzer",
+  "glib2",
+  "gtk3",
+  "gtk4",
+  "pandoc",
+  "postgresql",
+  "ffmpeg",
+  "archiso",
+  "kwayland",
+  "gimp",
+  "imagemagick",
+  "nodejs",
+  "telegram-desktop",
+];
