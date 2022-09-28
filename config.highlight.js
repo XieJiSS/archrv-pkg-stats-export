@@ -1,7 +1,10 @@
 module.exports = [
+  "linux",
+  "glibc",
   "firefox",
   "harfbuzz",
   "qt5-wayland",
+  "qt6-webview",
   "rust-analyzer",
   "glib2",
   "gtk3",
@@ -15,4 +18,12 @@ module.exports = [
   "imagemagick",
   "nodejs",
   "telegram-desktop",
+  "openmpi",
+  "redis",
+  "docker",
+  "docker-compose",
+  "python",
+  "mariadb",
+  "ruby",
+  "elixir",
 ];
