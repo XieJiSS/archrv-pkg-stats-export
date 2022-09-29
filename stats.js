@@ -1,5 +1,7 @@
 // @ts-check
 
+const { get } = require("https");
+
 const { getTextOfTypeFromMsg } = require("./utils/tmessage");
 const { alpmVercmp, versionRegex } = require("./utils/alpm");
 
@@ -78,4 +80,16 @@ highlightPkgs.forEach((pkgname) => {
     return;
   }
   console.log("   ", pkgname, "-", oldVersion === "" ? "never been built" : oldVersion, "->", newVersion);
+});
+
+// 4. show overall package repo build status
+
+get("https://archriscv.felixc.at/.status/status.txt", (res) => {
+  let data = Buffer.alloc(0);
+  res.on("data", (chunk) => {
+    data = Buffer.concat([data, chunk]);
+  });
+  res.once("end", () => {
+    console.log(data.toString("utf-8"));
+  });
 });
