@@ -62,10 +62,12 @@ chatHistory.messages.forEach((msg) => {
 });
 
 console.log("[ Arch Linux RISC-V Bi-Week Package Update Stats Report ]");
+// 0. show date
+console.log(`Report generated on: ${yyyymmdd(new Date())}`);
 // 1. built package count
-console.log("Built package count:", builtPkgCount);
+console.log("Built package count:", builtPkgCount, "times");
 // 2. built package count, distinct by package name
-console.log("Built distinct package count:", Object.keys(packageUpdates).length);
+console.log("Built distinct package:", Object.keys(packageUpdates).length);
 // 3. highlight packages
 console.log("Highlight packages:");
 highlightPkgs.forEach((pkgname) => {
@@ -79,7 +81,7 @@ highlightPkgs.forEach((pkgname) => {
     // rebuild without update, ignore
     return;
   }
-  console.log("   ", pkgname, "-", oldVersion === "" ? "never been built" : oldVersion, "->", newVersion);
+  console.log("   ", pkgname, "-", oldVersion === "" ? "never been built" : oldVersion, "-->", newVersion);
 });
 
 // 4. show overall package repo build status
@@ -90,6 +92,6 @@ get("https://archriscv.felixc.at/.status/status.txt", (res) => {
     data = Buffer.concat([data, chunk]);
   });
   res.once("end", () => {
-    console.log(data.toString("utf-8"));
+    console.log(data.toString("utf-8").trim());
   });
 });
