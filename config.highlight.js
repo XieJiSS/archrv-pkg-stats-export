@@ -26,4 +26,5 @@ module.exports = [
   "mariadb",
   "ruby",
   "elixir",
+  "jre-openjdk",
 ];
