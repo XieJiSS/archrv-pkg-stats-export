@@ -68,9 +68,9 @@ console.log("[ Arch Linux RISC-V Bi-Week Package Update Stats Report ]");
 // 0. show date
 console.log(`Report generated on: ${yyyymmdd(new Date())}`);
 // 1. built package count
-console.log("Built package count:", builtPkgCount, "times");
+console.log("Package update count:", builtPkgCount, "updates");
 // 2. built package count, distinct by package name
-console.log("Built distinct package:", Object.keys(packageUpdates).length);
+console.log("Distinct package update count:", Object.keys(packageUpdates).length);
 // 3. highlight packages
 console.log("Highlight packages:");
 highlightPkgs.forEach((pkgname) => {
