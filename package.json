@@ -17,5 +17,8 @@
     "url": "https://github.com/XieJiSS/archrv-pkg-stats-export/issues"
   },
   "homepage": "https://github.com/XieJiSS/archrv-pkg-stats-export#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^18.11.9"
+  }
 }
