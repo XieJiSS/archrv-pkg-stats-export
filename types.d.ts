@@ -1,9 +1,9 @@
-interface TextEntity {
+export interface TextEntity {
   type: string;
   text: string;
 }
 
-interface Message {
+export interface Message {
   id: number;
   type: string;
   date: string;
@@ -14,7 +14,7 @@ interface Message {
   text_entities: TextEntity[];
 }
 
-interface ChatHistoryJSON {
+export interface ChatHistoryJSON {
   name: string;
   type: string;
   id: number;
