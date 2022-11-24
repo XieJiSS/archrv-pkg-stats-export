@@ -17,7 +17,7 @@ const yyyymmdd = (date) => {
   return yyyy + mm + dd;
 };
 
-/** @type {ChatHistoryJSON} */
+/** @type {import("./types").ChatHistoryJSON} */
 const chatHistory = require(`./exports/export-${yyyymmdd(new Date())}.json`);
 
 /** @type {Record<string, [string, string]>} */
@@ -68,7 +68,7 @@ console.log("[ Arch Linux RISC-V Bi-Week Package Update Stats Report ]");
 // 0. show date
 console.log(`Report generated on: ${yyyymmdd(new Date())}`);
 // 1. built package count
-console.log("Package update count:", builtPkgCount, "updates");
+console.log("Package update count:", builtPkgCount);
 // 2. built package count, distinct by package name
 console.log("Distinct package update count:", Object.keys(packageUpdates).length);
 // 3. highlight packages

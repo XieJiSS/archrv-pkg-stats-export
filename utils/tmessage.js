@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * @param {Message} msg
+ * @param {import("../types").Message} msg
  */
 function getAllTextFromMsg(msg) {
   let text = "";
@@ -12,7 +12,7 @@ function getAllTextFromMsg(msg) {
 }
 
 /**
- * @param {Message} msg
+ * @param {import("../types").Message} msg
  * @param {string} type
  */
 function getTextOfTypeFromMsg(msg, type) {
