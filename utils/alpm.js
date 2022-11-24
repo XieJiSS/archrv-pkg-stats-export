@@ -1,6 +1,6 @@
 // @ts-check
 
-//                     [epoch: \d+   :] version: multiple [\w\+]+\.    [- pkgrel: \d+[\.\d+]+     ]
+//                     [epoch: \d+   :] version: 1 or more  \.[\w\+]+  [-    pkgrel: \d+ [\.\d+]* ]
 const versionRegex = /^(?<epoch>\d+)?:?(?<version>[\w\+]+(?:\.[\w\+]+)*)-?(?<pkgrel>\d+(?:\.\d+)*)?$/;
 
 /**
@@ -71,6 +71,7 @@ function alpmVercmp(a, b) {
 }
 
 /**
+ * @private
  * @description
  * 1.0a < 1.0b < 1.0beta < 1.0p < 1.0pre < 1.0rc < 1.0 < 1.0.a < 1.0.1
  *
