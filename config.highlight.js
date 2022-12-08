@@ -24,7 +24,7 @@ module.exports = Array.from(
     "pandoc",
     "mariadb",
     "harfbuzz",
-    "libreoffice",
+    "libreoffice-fresh",
     "electron",
     "mesa",
     "openmpi",
