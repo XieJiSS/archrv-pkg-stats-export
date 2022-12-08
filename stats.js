@@ -2,7 +2,7 @@
 
 const { get } = require("https");
 
-const { getTextOfTypeFromMsg } = require("./utils/tmessage");
+const { getTextNotOfTypeFromMsg } = require("./utils/tmessage");
 const { alpmVercmp, versionRegex } = require("./utils/alpm");
 
 const highlightPkgs = require("./config.highlight");
@@ -25,7 +25,7 @@ const packageUpdates = {};
 let builtPkgCount = 0;
 
 chatHistory.messages.forEach((msg) => {
-  const text = getTextOfTypeFromMsg(msg, "plain");
+  const text = getTextNotOfTypeFromMsg(msg, "bold");
   if (!text.startsWith("\n")) {
     console.error("Unexpected message format:", msg.text);
     return;
