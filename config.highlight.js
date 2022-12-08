@@ -1,4 +1,4 @@
-module.exports = [
+module.exports = Array.from(new Set([
   "linux",
   "glibc",
   "gcc",
@@ -23,6 +23,8 @@ module.exports = [
   "pandoc",
   "mariadb",
   "harfbuzz",
+  "libreoffice",
+  "electron",
   "mesa",
   "openmpi",
   "ffmpeg",
@@ -39,4 +41,4 @@ module.exports = [
   "git",
   "uwufetch",
   "debugedit",
-];
+]));
