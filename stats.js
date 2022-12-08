@@ -83,23 +83,7 @@ console.log("Package update count:", builtPkgCount);
 // 2. built package count, distinct by package name
 console.log("Distinct package update count:", Object.keys(packageUpdates).length);
 
-// 3. highlight packages
-console.log("Highlight packages:");
-highlightPkgs.forEach((pkgname) => {
-  if (!packageUpdates[pkgname]) {
-    return;
-  }
-  const [oldVersion, newVersion] = packageUpdates[pkgname];
-  const { epoch: epoch1, version: version1 } = oldVersion.match(versionRegex)?.groups ?? {};
-  const { epoch: epoch2, version: version2 } = newVersion.match(versionRegex)?.groups ?? {};
-  if (epoch1 === epoch2 && version1 === version2) {
-    // rebuild without update, ignore
-    return;
-  }
-  console.log("   ", pkgname, "-", oldVersion === "" ? "never been built" : oldVersion, "-->", newVersion);
-});
-
-// 4. show overall package repo build status
+// 3. show overall package repo build status
 get("https://archriscv.felixc.at/.status/status.txt", (res) => {
   let data = Buffer.alloc(0);
   res.on("data", (chunk) => {
@@ -107,5 +91,22 @@ get("https://archriscv.felixc.at/.status/status.txt", (res) => {
   });
   res.once("end", () => {
     console.log(data.toString("utf-8").trim());
+
+    // 4. highlight packages
+    console.log("Highlight packages:");
+    highlightPkgs.forEach((pkgname) => {
+      if (!packageUpdates[pkgname]) {
+        return;
+      }
+
+      const [oldVersion, newVersion] = packageUpdates[pkgname];
+      const { epoch: epoch1, version: version1 } = oldVersion.match(versionRegex)?.groups ?? {};
+      const { epoch: epoch2, version: version2 } = newVersion.match(versionRegex)?.groups ?? {};
+      if (epoch1 === epoch2 && version1 === version2) {
+        // rebuild without update, ignore
+        return;
+      }
+      console.log("   ", pkgname, "-", oldVersion === "" ? "never been built" : oldVersion, "-->", newVersion);
+    });
   });
 });
