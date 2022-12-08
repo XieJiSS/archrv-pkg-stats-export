@@ -62,6 +62,7 @@ function alpmVercmp(a, b) {
   if (Number.isNaN(rel1Num) || Number.isNaN(rel2Num)) {
     throw new Error("Invalid pkgrel: not a number");
   }
+
   if (rel1Num > rel2Num) {
     return 1;
   } else if (rel1Num < rel2Num) {
@@ -82,22 +83,24 @@ function alpmVercmp(a, b) {
  * @returns {-1 | 0 | 1} a < b is -1, a == b is 0, a > b is 1
  */
 function _vercmp(ver1, ver2) {
-  const ver1Parts = ver1.split(".");
-  const ver2Parts = ver2.split(".");
-  const maxParts = Math.max(ver1Parts.length, ver2Parts.length);
-  for (let i = 0; i < maxParts; i++) {
-    const part1 = ver1Parts[i] || "";
-    const part2 = ver2Parts[i] || "";
-    const num1 = parseInt(part1, 10);
-    const num2 = parseInt(part2, 10);
+  const ver1Fields = ver1.split(".");
+  const ver2Fields = ver2.split(".");
+
+  const longerFieldsLen = Math.max(ver1Fields.length, ver2Fields.length);
+  for (let i = 0; i < longerFieldsLen; i++) {
+    const field1 = ver1Fields[i] || "";
+    const field2 = ver2Fields[i] || "";
+    const num1 = parseInt(field1, 10);
+    const num2 = parseInt(field2, 10);
     if (num1 > num2) {
       return 1;
     } else if (num1 < num2) {
       return -1;
     }
+
     // parseInt results are equal, so compare non-numeric suffixes, if any
-    const rem1 = part1.replace(/^\d+/, "");
-    const rem2 = part2.replace(/^\d+/, "");
+    const rem1 = field1.replace(/^\d+/, "");
+    const rem2 = field2.replace(/^\d+/, "");
     if (rem1 === "" && rem2 === "") {
       continue;
     } else if (rem1 === "") {
@@ -105,7 +108,8 @@ function _vercmp(ver1, ver2) {
     } else if (rem2 === "") {
       return -1;
     }
-    // both rem1 and rem2 are non-empty, i.e. part1 and part2 has non-numeric suffix
+
+    // here, both rem1 and rem2 are non-empty, i.e. part1 and part2 has non-numeric suffix
     if (rem1 > rem2) {
       return 1;
     } else if (rem1 < rem2) {

@@ -30,25 +30,30 @@ chatHistory.messages.forEach((msg) => {
     console.error("Unexpected message format:", msg.text);
     return;
   }
+
   const lines = text.trim().split("\n");
+
   for (const line of lines) {
     builtPkgCount++;
+
     const words = line.split(" ");
     if (words.length === 2 && versionRegex.test(words[1])) {
+      // this indicates a new package that has never been built before
       const [pkgname, newVersion] = words;
       if (!packageUpdates[pkgname]) {
         packageUpdates[pkgname] = ["", newVersion];
         continue;
       }
-      // note that this is a new package
+
       packageUpdates[pkgname][0] = "";
-      const newVersion2 = packageUpdates[pkgname][1];
-      packageUpdates[pkgname][1] = alpmVercmp(newVersion, newVersion2) > 0 ? newVersion : newVersion2;
+      const storedNewVersion = packageUpdates[pkgname][1];
+      packageUpdates[pkgname][1] = alpmVercmp(newVersion, storedNewVersion) > 0 ? newVersion : storedNewVersion;
       continue;
     } else if (words.length !== 4 || words[2] !== "->") {
       console.error("Unexpected line:", line);
       continue;
     }
+
     const [pkgname, oldVersion, , newVersion] = words;
     if (!versionRegex.test(oldVersion) || !versionRegex.test(newVersion)) {
       console.error("Unexpected version:", line, oldVersion, newVersion);
@@ -58,19 +63,26 @@ chatHistory.messages.forEach((msg) => {
       packageUpdates[pkgname] = [oldVersion, newVersion];
       continue;
     }
-    const [oldVersion2, newVersion2] = packageUpdates[pkgname];
-    packageUpdates[pkgname][0] = alpmVercmp(oldVersion, oldVersion2) < 0 ? oldVersion : oldVersion2;
-    packageUpdates[pkgname][1] = alpmVercmp(newVersion, newVersion2) > 0 ? newVersion : newVersion2;
+
+    const [storedOldVersion, storedNewVersion] = packageUpdates[pkgname];
+
+    // this also handles the case where storedOldVersion is an empty string
+    packageUpdates[pkgname][0] = alpmVercmp(oldVersion, storedOldVersion) < 0 ? oldVersion : storedOldVersion;
+    packageUpdates[pkgname][1] = alpmVercmp(newVersion, storedNewVersion) > 0 ? newVersion : storedNewVersion;
   }
 });
 
 console.log("[ Arch Linux RISC-V Bi-Week Package Update Stats Report ]");
+
 // 0. show date
 console.log(`Report generated on: ${yyyymmdd(new Date())}`);
+
 // 1. built package count
 console.log("Package update count:", builtPkgCount);
+
 // 2. built package count, distinct by package name
 console.log("Distinct package update count:", Object.keys(packageUpdates).length);
+
 // 3. highlight packages
 console.log("Highlight packages:");
 highlightPkgs.forEach((pkgname) => {
@@ -88,7 +100,6 @@ highlightPkgs.forEach((pkgname) => {
 });
 
 // 4. show overall package repo build status
-
 get("https://archriscv.felixc.at/.status/status.txt", (res) => {
   let data = Buffer.alloc(0);
   res.on("data", (chunk) => {
