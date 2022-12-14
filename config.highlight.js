@@ -38,9 +38,7 @@ module.exports = Array.from(
     "redis",
     "kotlin",
     "sqlite",
-    "graphviz",
     "git",
-    "uwufetch",
     "debugedit",
   ])
 );
