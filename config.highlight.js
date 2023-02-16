@@ -40,5 +40,6 @@ module.exports = Array.from(
     "sqlite",
     "git",
     "debugedit",
+    "chromium",
   ])
 );
