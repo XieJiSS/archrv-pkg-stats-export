@@ -91,14 +91,22 @@ get("https://archriscv.felixc.at/.status/status.txt", (res) => {
   });
   res.once("end", () => {
     console.log(data.toString("utf-8").trim());
+    printHighlight();
+  });
+}).once("error", (err) => {
+  console.error("Failed to fetch latest porting status text from https://archriscv.felixc.at/.status/status.txt");
+  printHighlight();
+});
 
-    // 4. highlight packages
-    console.log("Highlight packages:");
-    highlightPkgs.forEach((pkgname) => {
+// 4. highlight packages
+function printHighlight() {
+  console.log("Highlight packages:");
+  highlightPkgs.forEach((pkgNameOrRegex) => {
+    if (typeof pkgNameOrRegex === "string") {
+      const pkgname = pkgNameOrRegex;
       if (!packageUpdates[pkgname]) {
         return;
       }
-
       const [oldVersion, newVersion] = packageUpdates[pkgname];
       const { epoch: epoch1, version: version1 } = oldVersion.match(versionRegex)?.groups ?? {};
       const { epoch: epoch2, version: version2 } = newVersion.match(versionRegex)?.groups ?? {};
@@ -107,6 +115,19 @@ get("https://archriscv.felixc.at/.status/status.txt", (res) => {
         return;
       }
       console.log("   ", pkgname, "-", oldVersion === "" ? "never been built" : oldVersion, "-->", newVersion);
-    });
+    } else {
+      // RegExp
+      const matchedPkgs = Object.keys(packageUpdates).filter((pkg) => pkg.match(pkgNameOrRegex));
+      for (const pkgname of matchedPkgs) {
+        const [oldVersion, newVersion] = packageUpdates[pkgname];
+        const { epoch: epoch1, version: version1 } = oldVersion.match(versionRegex)?.groups ?? {};
+        const { epoch: epoch2, version: version2 } = newVersion.match(versionRegex)?.groups ?? {};
+        if (epoch1 === epoch2 && version1 === version2) {
+          // rebuild without update, ignore
+          continue;
+        }
+        console.log("   ", pkgname, "-", oldVersion === "" ? "never been built" : oldVersion, "-->", newVersion);
+      }
+    }
   });
-});
+}
